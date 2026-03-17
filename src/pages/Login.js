@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/library-logo.png";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -44,9 +45,9 @@ function Login() {
       >
         <div className="text-center mb-3">
           <img
-            src="https://hagiosschooloflife.sch.id/img/navbar/logo-hsol.webp"
-            alt="Hagios Logo"
-            style={{ height: 70 }}
+            src={logo}
+            alt="Library Logo"
+            style={{ height: 150 }}
           />
           <h4 className="mt-2">Hagios Library</h4>
           <small className="text-muted">Admin Login</small>
