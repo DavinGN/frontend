@@ -115,7 +115,7 @@ function Dashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {topBooks.map((b, index) => (
+                        {topBooks.slice(0, 5).map((b, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{b.title}</td>
@@ -147,7 +147,7 @@ function Dashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {topTools.map((t, index) => (
+                        {topTools.slice(0, 5).map((t, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{t.name}</td>
@@ -179,7 +179,7 @@ function Dashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {topUsers.map((u, index) => (
+                        {topUsers.slice(0, 5).map((u, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{u.username}</td>
