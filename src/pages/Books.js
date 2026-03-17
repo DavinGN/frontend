@@ -126,7 +126,7 @@ function Books() {
       <Sidebar />
       <div className="main">
         <Navbar />
-        <h2 className="mb-3">📚 Books Management</h2>
+        <h2 className="mb-3">Books Management</h2>
 
         {/* 🔍 SEARCH */}
         <div className="mb-3">

@@ -11,6 +11,8 @@ function Sidebar() {
     { name: "Consumables", path: "/consumables" },
     { name: "Digital Books", path: "/digital-books" },
     { name: "Approvals", path: "/approvals" },
+    { name: "Return", path: "/return" },
+    { name: "History", path: "/history" },
   ];
 
   return (

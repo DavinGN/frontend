@@ -33,6 +33,8 @@ import Users from "./pages/Users";
 import Consumables from "./pages/Consumables";
 import DigitalBooks from "./pages/DigitalBooks";
 import Approvals from "./pages/Approvals";
+import HistoryPage from "./pages/HistoryPage";
+import ReturnPage from "./pages/ReturnPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -62,6 +64,12 @@ function App() {
 
         <Route path="/approvals"
           element={<ProtectedRoute><Approvals/></ProtectedRoute>} />
+
+        <Route path="/history"
+          element={<ProtectedRoute><HistoryPage/></ProtectedRoute>} />
+
+        <Route path="/return"
+          element={<ProtectedRoute><ReturnPage/></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );

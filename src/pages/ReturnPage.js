@@ -3,44 +3,54 @@ import api from "../services/api";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 
-function ApprovalsPage() {
+function ReturnPage() {
   const [books, setBooks] = useState([]);
   const [tools, setTools] = useState([]);
-  const [consumables, setConsumables] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { load(); }, []);
 
   const load = async () => {
-    const b = await api.get("/borrow-books");
-    const t = await api.get("/borrow-tools");
-    const c = await api.get("/consumable-requests");
+    try {
+      const b = await api.get("/borrow-books");
+      const t = await api.get("/borrow-tools");
 
-    setBooks(b.data.filter(e => e.status === "pending"));
-    setTools(t.data.filter(e => e.status === "pending"));
-    setConsumables(c.data.filter(e => e.status === "pending"));
-    setLoading(false);
+      setBooks(
+        b.data.filter(e =>
+          e.status === "approved" || e.status === "dipinjam"
+        )
+      );
+
+      setTools(
+        t.data.filter(e =>
+          e.status === "approved" || e.status === "dipinjam"
+        )
+      );
+
+    } catch (err) {
+      console.error(err);
+      alert("Failed load return data");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const approve = (url) => api.post(url).then(load);
-  const reject = (url) => api.post(url).then(load);
+  const returnItem = (url) => api.post(url).then(load);
 
   const statusColor = (status) => ({
-    pending: "warning",
     approved: "success",
     dipinjam: "success",
-    rejected: "danger",
     returned: "primary",
   }[status] || "secondary");
 
   return (
-    <Layout title="📋 Approvals" loading={loading}>
+    <Layout title="🔄 Return" loading={loading}>
+
       <h4>📚 Books</h4>
       <BookToolTable
         data={books}
         type="book"
-        approve={(id)=>approve(`/borrow-books/${id}/approve`)}
-        reject={(id)=>reject(`/borrow-books/${id}/reject`)}
+        returnItem={(id)=>returnItem(`/borrow-books/${id}/return`)}
         statusColor={statusColor}
       />
 
@@ -48,18 +58,10 @@ function ApprovalsPage() {
       <BookToolTable
         data={tools}
         type="tool"
-        approve={(id)=>approve(`/borrow-tools/${id}/approve`)}
-        reject={(id)=>reject(`/borrow-tools/${id}/reject`)}
+        returnItem={(id)=>returnItem(`/borrow-tools/${id}/return`)}
         statusColor={statusColor}
       />
 
-      <h4 className="mt-4">🧪 Consumables</h4>
-      <ConsumableTable
-        data={consumables}
-        approve={(id)=>approve(`/consumable-requests/${id}/approve`)}
-        reject={(id)=>reject(`/consumable-requests/${id}/reject`)}
-        statusColor={statusColor}
-      />
     </Layout>
   );
 }
@@ -156,62 +158,62 @@ function BookToolTable({ data, type, approve, reject, returnItem, statusColor })
   );
 }
 
-function ConsumableTable({ data, approve, reject, statusColor }) {
-  return (
-    <div className="table-responsive mb-4">
-      <table className="table table-bordered table-hover">
-        <thead className="table-dark">
-          <tr>
-            <th>Item</th>
-            <th>User</th>
-            <th>Jumlah</th>
-            <th>Status</th>
-            <th width="200">Action</th>
-          </tr>
-        </thead>
+// function ConsumableTable({ data, approve, reject, statusColor }) {
+//   return (
+//     <div className="table-responsive mb-4">
+//       <table className="table table-bordered table-hover">
+//         <thead className="table-dark">
+//           <tr>
+//             <th>Item</th>
+//             <th>User</th>
+//             <th>Jumlah</th>
+//             <th>Status</th>
+//             <th width="200">Action</th>
+//           </tr>
+//         </thead>
 
-        <tbody>
-          {data.map((r) => (
-            <tr key={r.id}>
-              <td>{r.consumable?.name}</td>
-              <td>{r.user?.username}</td>
-              <td>{r.quantity}</td>
+//         <tbody>
+//           {data.map((r) => (
+//             <tr key={r.id}>
+//               <td>{r.consumable?.name}</td>
+//               <td>{r.user?.username}</td>
+//               <td>{r.quantity}</td>
 
-              <td>
-                <span className={`badge bg-${statusColor(r.status)}`}>
-                  {r.status}
-                </span>
-              </td>
+//               <td>
+//                 <span className={`badge bg-${statusColor(r.status)}`}>
+//                   {r.status}
+//                 </span>
+//               </td>
 
-              <td>
-                {approve && r.status === "pending" && (
-                  <>
-                    <button
-                      className="btn btn-success btn-sm me-2"
-                      onClick={() => approve(r.id)}
-                    >
-                      Approve
-                    </button>
+//               <td>
+//                 {approve && r.status === "pending" && (
+//                   <>
+//                     <button
+//                       className="btn btn-success btn-sm me-2"
+//                       onClick={() => approve(r.id)}
+//                     >
+//                       Approve
+//                     </button>
 
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => reject(r.id)}
-                    >
-                      Reject
-                    </button>
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+//                     <button
+//                       className="btn btn-danger btn-sm"
+//                       onClick={() => reject(r.id)}
+//                     >
+//                       Reject
+//                     </button>
+//                   </>
+//                 )}
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
 
-      {data.length === 0 && (
-        <div className="text-center mt-3">No data</div>
-      )}
-    </div>
-  );
-}
+//       {data.length === 0 && (
+//         <div className="text-center mt-3">No data</div>
+//       )}
+//     </div>
+//   );
+// }
 
-export default ApprovalsPage;
+export default ReturnPage;
