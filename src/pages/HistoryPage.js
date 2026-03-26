@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import * as xlsx from "xlsx";
+import { saveAs } from "file-saver";
 
 function HistoryPage() {
   const [books, setBooks] = useState([]);
@@ -74,6 +76,57 @@ function HistoryPage() {
     });
   };
 
+  // ================= EXPORT EXCEL =================
+  const exportToExcel = () => {
+    let data = [];
+
+    if (filter === "book") {
+      data = books.map((b) => ({
+        Item: b.book?.title,
+        User: b.user?.username,
+        BorrowDate: b.borrow_date,
+        ReturnDate: b.return_date,
+        Status: b.status,
+      }));
+    }
+
+    if (filter === "tool") {
+      data = tools.map((t) => ({
+        Item: t.tool?.name,
+        User: t.user?.username,
+        BorrowDate: t.borrow_date,
+        ReturnDate: t.return_date,
+        Status: t.status,
+      }));
+    }
+
+    if (filter === "consumable") {
+      data = consumables.map((c) => ({
+        Item: c.consumable?.name,
+        User: c.user?.username,
+        Quantity: c.quantity,
+        RequestDate: c.created_at,
+        Status: c.status,
+      }));
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "History");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const file = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(file, `History-${filter}.xlsx`);
+  };
+
   // 🔥 PAGINATION
   const paginate = (data) => {
     const start = (currentPage - 1) * itemsPerPage;
@@ -116,7 +169,12 @@ function HistoryPage() {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   return (
-    <Layout title="📜 History" loading={loading}>
+    <Layout title="History" loading={loading}>
+      
+      {/* 📥 EXPORT EXCEL */}
+      <button className="btn btn-success mb-3" onClick={exportToExcel}>
+        Export Excel
+      </button>
 
       {/* FILTER */}
       <div className="mb-3">

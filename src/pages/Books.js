@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import api from "../services/api";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import * as xlsx from "xlsx";
+import { saveAs } from "file-saver";
 
 function Books() {
   const [books, setBooks] = useState([]);
@@ -120,6 +122,34 @@ function Books() {
     }
   };
 
+  // ================= EXPORT EXCEL =================
+  const exportToExcel = () => {
+    const data = books.map((b) => ({
+      Title: b.title,
+      Author: b.author,
+      Publisher: b.publisher,
+      Pages: b.pages,
+      Category: b.category?.name,
+      Location: b.location,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Books");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const file = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(file, "Books.xlsx");
+  };
+
   // ================= UI =================
   return (
     <div className="layout">
@@ -230,6 +260,11 @@ function Books() {
             )}
           </div>
         </form>
+
+        {/* 📥 EXPORT EXCEL */}
+        <button className="btn btn-success mb-3" onClick={exportToExcel}>
+          Export Excel
+        </button>
 
         {/* 📊 TABLE */}
         <table className="table table-bordered table-hover">

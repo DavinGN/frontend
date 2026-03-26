@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import api from "../services/api";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import * as xlsx from "xlsx";
+import { saveAs } from "file-saver";
 
 function Tools() {
 
@@ -157,6 +159,30 @@ function Tools() {
 
   };
 
+  // ================= EXPORT EXCEL =================
+  const exportToExcel = () => {
+    const data = tools.map((t) => ({
+      Name: t.name,
+      Location: t.location,
+      Condition: t.kondisi?.name,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Tools");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const file = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(file, "Tools.xlsx");
+  };
 
   // ================= UI =================
   return (
@@ -171,6 +197,10 @@ function Tools() {
 
         <h2>Tools Management</h2>
 
+        {/* 📥 EXPORT EXCEL */}
+        <button className="btn btn-success mb-3" onClick={exportToExcel}>
+          Export Excel
+        </button>
 
         {/* 🔍 SEARCH */}
         <div className="mb-3">

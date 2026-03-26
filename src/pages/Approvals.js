@@ -34,7 +34,7 @@ function ApprovalsPage() {
   }[status] || "secondary");
 
   return (
-    <Layout title="📋 Approvals" loading={loading}>
+    <Layout title="Approvals" loading={loading}>
       <h4>📚 Books</h4>
       <BookToolTable
         data={books}

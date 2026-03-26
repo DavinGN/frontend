@@ -58,7 +58,7 @@ function Dashboard() {
         <Navbar />
 
         <div className="container-fluid mt-3">
-          <h2 className="mb-4 fw-bold">📊 Dashboard</h2>
+          <h2 className="mb-4 fw-bold">Dashboard</h2>
 
           {loading ? (
             <div className="text-center">Loading...</div>

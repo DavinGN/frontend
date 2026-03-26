@@ -44,7 +44,7 @@ function ReturnPage() {
   }[status] || "secondary");
 
   return (
-    <Layout title="🔄 Return" loading={loading}>
+    <Layout title="Return" loading={loading}>
 
       <h4>📚 Books</h4>
       <BookToolTable
