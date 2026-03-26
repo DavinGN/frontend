@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import api from "../services/api";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import * as xlsx from "xlsx";
+import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
 function Books() {
