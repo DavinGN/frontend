@@ -128,7 +128,7 @@ function Books() {
       // ambil semua data (tanpa pagination)
       const res = await api.get("/books?all=true");
 
-      const data = res.data.map((b) => ({
+      const data = res.data.data.map((b) => ({
         Title: b.title,
         Author: b.author,
         Publisher: b.publisher,
