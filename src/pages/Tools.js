@@ -6,6 +6,8 @@ import Navbar from "../components/Navbar";
 function Tools() {
 
   const [tools, setTools] = useState([]);
+  const [kondisis, setKondisis] = useState([]);
+
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -14,9 +16,11 @@ function Tools() {
     id: null,
     name: "",
     location: "",
+    kondisi_id: ""
   });
 
   const [isEdit, setIsEdit] = useState(false);
+
 
   // ================= FETCH TOOLS =================
   const fetchTools = useCallback(async (p = 1) => {
@@ -37,8 +41,29 @@ function Tools() {
 
   }, [search]);
 
+
+  // ================= FETCH KONDISI =================
+  const fetchKondisi = async () => {
+
+    try {
+
+      const res = await api.get("/kondisi");
+      setKondisis(res.data);
+
+    } catch {
+
+      alert("Failed load kondisi");
+
+    }
+
+  };
+
+
   useEffect(() => {
+
     fetchTools(1);
+    fetchKondisi();
+
   }, [fetchTools]);
 
 
@@ -52,12 +77,14 @@ function Tools() {
 
   };
 
+
   const resetForm = () => {
 
     setForm({
       id: null,
       name: "",
       location: "",
+      kondisi_id: ""
     });
 
     setIsEdit(false);
@@ -104,6 +131,7 @@ function Tools() {
       id: tool.id,
       name: tool.name || "",
       location: tool.location || "",
+      kondisi_id: tool.kondisi_id || ""
     });
 
     setIsEdit(true);
@@ -189,6 +217,29 @@ function Tools() {
             </div>
 
 
+            {/* KONDISI */}
+            <div className="col">
+
+              <select
+                className="form-control"
+                name="kondisi_id"
+                value={form.kondisi_id}
+                onChange={handleChange}
+              >
+
+                <option value="">Select Condition</option>
+
+                {kondisis.map((k) => (
+                  <option key={k.id} value={k.id}>
+                    {k.name}
+                  </option>
+                ))}
+
+              </select>
+
+            </div>
+
+
             <div className="col-auto">
 
               <button className="btn btn-primary">
@@ -227,6 +278,7 @@ function Tools() {
             <tr>
               <th>Name</th>
               <th>Location</th>
+              <th>Condition</th>
               <th width="150">Action</th>
             </tr>
 
@@ -240,6 +292,7 @@ function Tools() {
 
                 <td>{t.name}</td>
                 <td>{t.location}</td>
+                <td>{t.kondisi?.name}</td>
 
                 <td>
 
