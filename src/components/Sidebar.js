@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/library-logo.png"; // ⬅️ import logo
+import logo from "../assets/library-logo.png";
 
 function Sidebar() {
   const location = useLocation();
@@ -18,17 +18,24 @@ function Sidebar() {
 
   return (
     <div className="sidebar">
-      <div className="sidebar-header" style={{ textAlign: "center" }}>
+      <div className="sidebar-header" style={{ textAlign: "center", padding: "20px 10px" }}>
         
-        {/* ✅ Logo */}
+        {/* ✅ Logo diperbesar */}
         <img 
           src={logo} 
           alt="Library Logo" 
-          style={{ width: "200px", marginBottom: "10px" }} 
+          style={{ 
+            width: "100px",   // ⬅️ BESARIN (dari 60px → 100px)
+            height: "100px",
+            objectFit: "contain",
+            marginBottom: "10px"
+          }} 
         />
 
         {/* ✅ Text */}
-        <h4>Hagios Library</h4>
+        <h4 style={{ fontSize: "20px", fontWeight: "bold" }}>
+          Hagios Library
+        </h4>
       </div>
 
       <ul className="sidebar-menu">
