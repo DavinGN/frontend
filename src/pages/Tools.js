@@ -164,7 +164,7 @@ function Tools() {
     try {
       const res = await api.get("/tools?all=true");
 
-      const data = res.data.data.map((t) => ({
+      const data = res.data.map((t) => ({
         Name: t.name,
         Location: t.location,
         Condition: t.kondisi?.name,

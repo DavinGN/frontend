@@ -125,10 +125,9 @@ function Books() {
   // ================= EXPORT EXCEL =================
   const exportToExcel = async () => {
     try {
-      // ambil semua data (tanpa pagination)
       const res = await api.get("/books?all=true");
 
-      const data = res.data.data.map((b) => ({
+      const data = res.data.map((b) => ({
         Title: b.title,
         Author: b.author,
         Publisher: b.publisher,
@@ -153,6 +152,7 @@ function Books() {
 
       saveAs(file, "Books.xlsx");
     } catch (err) {
+      console.error(err); // 🔥 tambah ini biar kelihatan error asli
       alert("Export failed");
     }
   };
