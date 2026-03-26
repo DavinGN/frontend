@@ -16,7 +16,7 @@ function Navbar() {
   return (
     <div className="navbar-admin shadow-sm">
       <div className="navbar-left">
-        <h4 className="mb-0">📚 Hagios Library Admin</h4>
+        <h4 className="mb-0">Hagios Library Admin</h4>
       </div>
 
       <div className="navbar-right">
