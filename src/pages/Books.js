@@ -158,6 +158,11 @@ function Books() {
         <Navbar />
         <h2 className="mb-3">Books Management</h2>
 
+        {/* 📥 EXPORT EXCEL */}
+        <button className="btn btn-success mb-3" onClick={exportToExcel}>
+          Export Excel
+        </button>
+
         {/* 🔍 SEARCH */}
         <div className="mb-3">
           <input
@@ -260,11 +265,6 @@ function Books() {
             )}
           </div>
         </form>
-
-        {/* 📥 EXPORT EXCEL */}
-        <button className="btn btn-success mb-3" onClick={exportToExcel}>
-          Export Excel
-        </button>
 
         {/* 📊 TABLE */}
         <table className="table table-bordered table-hover">
