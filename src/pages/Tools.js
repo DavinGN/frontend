@@ -47,7 +47,7 @@ function Tools() {
 
     try {
 
-      const res = await api.get("/kondisi");
+      const res = await api.get("/kondisis");
       setKondisis(res.data);
 
     } catch {
