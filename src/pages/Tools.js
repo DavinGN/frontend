@@ -160,28 +160,34 @@ function Tools() {
   };
 
   // ================= EXPORT EXCEL =================
-  const exportToExcel = () => {
-    const data = tools.map((t) => ({
-      Name: t.name,
-      Location: t.location,
-      Condition: t.kondisi?.name,
-    }));
+  const exportToExcel = async () => {
+    try {
+      const res = await api.get("/tools?all=true");
 
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
+      const data = res.data.map((t) => ({
+        Name: t.name,
+        Location: t.location,
+        Condition: t.kondisi?.name,
+      }));
 
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Tools");
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
 
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Tools");
 
-    const file = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
 
-    saveAs(file, "Tools.xlsx");
+      const file = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      saveAs(file, "Tools.xlsx");
+    } catch (err) {
+      alert("Export failed");
+    }
   };
 
   // ================= UI =================

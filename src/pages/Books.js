@@ -123,31 +123,38 @@ function Books() {
   };
 
   // ================= EXPORT EXCEL =================
-  const exportToExcel = () => {
-    const data = books.map((b) => ({
-      Title: b.title,
-      Author: b.author,
-      Publisher: b.publisher,
-      Pages: b.pages,
-      Category: b.category?.name,
-      Location: b.location,
-    }));
+  const exportToExcel = async () => {
+    try {
+      // ambil semua data (tanpa pagination)
+      const res = await api.get("/books?all=true");
 
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
+      const data = res.data.map((b) => ({
+        Title: b.title,
+        Author: b.author,
+        Publisher: b.publisher,
+        Pages: b.pages,
+        Category: b.category?.name,
+        Location: b.location,
+      }));
 
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Books");
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
 
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Books");
 
-    const file = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
 
-    saveAs(file, "Books.xlsx");
+      const file = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      saveAs(file, "Books.xlsx");
+    } catch (err) {
+      alert("Export failed");
+    }
   };
 
   // ================= UI =================
