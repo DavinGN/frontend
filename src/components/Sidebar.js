@@ -24,7 +24,7 @@ function Sidebar() {
         <img 
           src={logo} 
           alt="Library Logo" 
-          style={{ width: "60px", marginBottom: "10px" }} 
+          style={{ width: "200px", marginBottom: "10px" }} 
         />
 
         {/* ✅ Text */}
