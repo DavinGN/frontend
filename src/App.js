@@ -30,6 +30,7 @@ import Dashboard from "./pages/Dashboard";
 import Books from "./pages/Books";
 import Tools from "./pages/Tools";
 import Users from "./pages/Users";
+import NotificationPage from "./pages/NotificationPage";
 import Consumables from "./pages/Consumables";
 import DigitalBooks from "./pages/DigitalBooks";
 import Approvals from "./pages/Approvals";
@@ -70,6 +71,10 @@ function App() {
 
         <Route path="/return"
           element={<ProtectedRoute><ReturnPage/></ProtectedRoute>} />
+
+        <Route path="/notifications"
+          element={<ProtectedRoute><NotificationPage/></ProtectedRoute>} />
+
       </Routes>
     </BrowserRouter>
   );

@@ -14,6 +14,7 @@ function Sidebar() {
     { name: "Approvals", path: "/approvals" },
     { name: "Return", path: "/return" },
     { name: "History", path: "/history" },
+    { name: "Notifications", path: "/notifications" }
   ];
 
   return (
